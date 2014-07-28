@@ -182,11 +182,22 @@ BDTreader::BDTreader(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU50ns_POSTLS171_V16-v1_ntuple.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU25ns_POSTLS171_V15-v1_ntuple.root");
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_0_pre5/src/Regression/RegressionTrees/test/hlt_reco.root");
       if (!f || !f->IsOpen()) {
+         //f = new TFile("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU50ns_POSTLS171_V16-v1_ntuple.root");
+         //f = new TFile("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU25ns_POSTLS171_V15-v1_ntuple.root");
          f = new TFile("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_0_pre5/src/Regression/RegressionTrees/test/hlt_reco.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_0_pre5/src/Regression/RegressionTrees/test/hlt_reco.root:/RECO_mustacheSCTree");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU50ns_POSTLS171_V16-v1_ntuple.root:/HLT_mustacheSCTree");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU50ns_POSTLS171_V16-v1_ntuple.root:/RECO_mustacheSCTree");
+      
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU25ns_POSTLS171_V15-v1_ntuple.root:/HLT_mustacheSCTree");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/Regression/RegressionTrees/test/PU25ns_POSTLS171_V15-v1_ntuple.root:/RECO_mustacheSCTree");
+
+      TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_0_pre5/src/Regression/RegressionTrees/test/hlt_reco.root:/HLT_mustacheSCTree");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_0_pre5/src/Regression/RegressionTrees/test/hlt_reco.root:/RECO_mustacheSCTree");
       dir->GetObject("SuperClusterTree",tree);
 
    }

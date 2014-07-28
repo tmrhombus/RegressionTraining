@@ -5,8 +5,6 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
-//#include "src/GBRForest.cpp"
-
 #include <stdlib.h> // for fabs()
 #include <iostream> // for std::cout
 
@@ -19,9 +17,11 @@
 void BDTreader::Loop()
 {
    if (fChain == 0) return;
-                                                                                                    TFile *outfile = new TFile("./roots/BDTout.root","RECREATE");
-    TFile* RECO_forestFile = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_712_HLT_results.root");
-    TFile* HLT_forestFile  = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_712_HLT_results.root");
+    TFile *outfile = new TFile("./roots/BDTout_HLT_old.root","RECREATE");
+    //TFile* RECO_forestFile = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_712_PU25_RECO_results.root");
+    //TFile* HLT_forestFile  = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_712_PU25_HLT_results.root");
+    TFile* RECO_forestFile = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_710_RECO_results.root");
+    TFile* HLT_forestFile  = TFile::Open("/afs/hep.wisc.edu/cms/tperry/HLT_slc6_481_CMSSW_7_1_2/src/RegressionTraining/roots/ELE_710_HLT_results.root");
 
     Long64_t nentries = fChain->GetEntriesFast();
     Long64_t nbytes = 0, nb = 0;
@@ -89,9 +89,9 @@ void BDTreader::Loop()
     res_bmin = -0.5;
     res_bmax = 0.5; 
 
-    nvtx_nbins = 4;
-    nvtx_bmin = 1.;
-    nvtx_bmax = 4.;
+    nvtx_nbins = 20;
+    nvtx_bmin = 0.;
+    nvtx_bmax = 20.;
 
     rho_nbins = 50;
     rho_bmin = 0.;
