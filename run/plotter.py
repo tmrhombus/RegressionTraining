@@ -19,8 +19,9 @@ ypos = 0.64
 big = 0.04
 sml = 0.03
 
+rebin_EE = 2
 
-extraName = ""
+extraName = "_v3"
 draw_res = False
 draw_res_v_nvtx = False
 draw_res_v_rho = False
@@ -31,16 +32,12 @@ draw_res = True
 
 res_line0 = True
 varnames = [
- "genOsc_1000_3p0",
-# "genOsc_1000_3p5",
-# "genOsc_1000_4p0",
-# "genOsc_1000_4p5",
-# "genOsc_1000_5p0",
-# "genOsc_1000_6p0",
-# "genOsc_1000_7p0",
-# "genOsc_1000_10p0",
-# "genOsc_1000_15p0",
-# "genOsc_1000_20p0",
+ "HLT_50ns",
+ "HLT_25ns",
+ #"HLT_old",
+ "RECO_50ns",
+ "RECO_25ns",
+ #"RECO_old",
  ]
 
 c_hlt = ROOT.EColor.kRed 
@@ -56,8 +53,7 @@ c2.SetLogz()
 c3.SetLogz()
 for varname in varnames:
  
- theFile = TFile("./roots/BDTout.root")
- #theFile = TFile("./roots/TMVAoutput_%s.root"%(varname))
+ theFile = TFile("./roots/BDTout_%s.root"%(varname))
 
 ###          ###
 #  resolution  #
@@ -65,72 +61,73 @@ for varname in varnames:
 ######################################################################
  if draw_res:
   c1.cd()
-  res_preEB = theFile.Get("res_preEB")
-  res_preEB.SetName("res_preEB")
-  res_preEB.SetLineColor(1)
-  res_preEB.SetLineWidth(3)
-  res_EBmax = res_preEB.GetMaximum()
-  res_EBmean = res_preEB.GetMean()
-  res_EBrms = res_preEB.GetRMS()
-  res_preEB.GetXaxis().SetTitle("(genEnergy-(scRawEnergy+scPreshowerEnergy))/genEnergy")
-  
-  res_recoEB = theFile.Get("res_recoEB")
-  res_recoEB.SetName("res_recoEB")
-  res_recoEB.SetLineColor(c_rec)
-  res_recoEB.SetLineWidth(3)
-  res_recoEBmax = res_recoEB.GetMaximum()
-  res_recoEBmean = res_recoEB.GetMean()
-  res_recoEBrms = res_recoEB.GetRMS()
-  
-  res_hltEB = theFile.Get("res_hltEB")
-  res_hltEB.SetName("res_hltEB")
-  res_hltEB.SetLineColor(c_hlt)
-  res_hltEB.SetLineWidth(2)
-  res_hltEBmax = res_hltEB.GetMaximum()
-  res_hltEBmean = res_hltEB.GetMean()
-  res_hltEBrms = res_hltEB.GetRMS()
-  
-  #res_legEB=TLegend(0.11,0.6,0.4,0.89)
-  #res_legEB.SetFillColor(0)
-  #res_legEB.SetBorderSize(0)
-  #res_legEB.AddEntry(res_preEB,"unscaled")
-  #res_legEB.AddEntry(res_recoEB,"RECO BDT applied")
-  #res_legEB.AddEntry(res_hltEB,"HLT BDT applied")
-  
-  #res_statEB=TLegend(0.6,0.6,0.89,0.89)
-  #res_statEB.SetFillColor(0)
-  #res_statEB.SetBorderSize(0)
-  #res_statEB.AddEntry(res_preEB,"Mean: %0.2f  RMS: %0.2f"%(res_EBmean,res_EBrms))
-  #res_statEB.AddEntry(res_recoEB,"Mean: %0.2f  RMS: %0.2f"%(res_recoEBmean,res_recoEBrms))
-  #res_statEB.AddEntry(res_hltEB,"Mean: %0.2f  RMS: %0.2f"%(res_hltEBmean,res_hltEBrms))
-  
-  EBMax = 1350
-  #EBMax = max(res_EBmax,res_recoEBmax,res_hltEBmax)
- 
-  res_lineEB0 = TLine(0.,0.,0.,1.05*EBMax)
-  res_lineEB0.SetLineWidth(1)
-  res_lineEB0.SetLineStyle(2)
- 
-  res_preEB.SetMaximum(1.1*EBMax)
-  res_preEB.SetTitle("Barrel")
-  res_preEB.Draw("hist")
-  res_recoEB.Draw("hist,sames")
-  res_hltEB.Draw("hist,sames")
-  #res_legEB.Draw("sames")
-  #res_statEB.Draw("sames")
-
-  tex.SetTextSize(big)
-  tex.DrawLatex(xpos,ypos+0.25,"#color[%s]{Unscaled}"%(c_pre))
-  tex.DrawLatex(xpos,ypos+0.15,"#color[%s]{HLT Trained}"%(c_hlt))
-  tex.DrawLatex(xpos,ypos+0.05,"#color[%s]{RECO Trained}"%(c_rec))
-  tex.SetTextSize(sml)
-  tex.DrawLatex(xpos,ypos+0.2,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_pre,res_EBmean,res_EBrms))
-  tex.DrawLatex(xpos,ypos+0.1,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_hlt,res_recoEBmean,res_recoEBrms))
-  tex.DrawLatex(xpos,ypos,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_rec,res_hltEBmean,res_hltEBrms))
-  cmsPrelim.prelim_noLumi()
-  if res_line0: res_lineEB0.Draw()
-  
-  c1.Print("/afs/hep.wisc.edu/home/tperry/www/HLT/on_off_comp/7_1_2/BDT/%s_res_EB%s.png"%(varname,extraName))
+#  res_preEB = theFile.Get("res_preEB")
+#  res_preEB.SetName("res_preEB")
+#  res_preEB.SetLineColor(1)
+#  res_preEB.SetLineWidth(3)
+#  res_EBmax = res_preEB.GetMaximum()
+#  res_EBmean = res_preEB.GetMean()
+#  res_EBrms = res_preEB.GetRMS()
+#  res_preEB.GetXaxis().SetTitle("(genEnergy-(scRawEnergy+scPreshowerEnergy))/genEnergy")
+#  
+#  res_recoEB = theFile.Get("res_recoEB")
+#  res_recoEB.SetName("res_recoEB")
+#  res_recoEB.SetLineColor(c_rec)
+#  res_recoEB.SetLineWidth(3)
+#  res_recoEBmax = res_recoEB.GetMaximum()
+#  res_recoEBmean = res_recoEB.GetMean()
+#  res_recoEBrms = res_recoEB.GetRMS()
+#  
+#  res_hltEB = theFile.Get("res_hltEB")
+#  res_hltEB.SetName("res_hltEB")
+#  res_hltEB.SetLineColor(c_hlt)
+#  res_hltEB.SetLineWidth(2)
+#  res_hltEBmax = res_hltEB.GetMaximum()
+#  res_hltEBmean = res_hltEB.GetMean()
+#  res_hltEBrms = res_hltEB.GetRMS()
+#  
+#  #res_legEB=TLegend(0.11,0.6,0.4,0.89)
+#  #res_legEB.SetFillColor(0)
+#  #res_legEB.SetBorderSize(0)
+#  #res_legEB.AddEntry(res_preEB,"unscaled")
+#  #res_legEB.AddEntry(res_recoEB,"RECO BDT applied")
+#  #res_legEB.AddEntry(res_hltEB,"HLT BDT applied")
+#  
+#  #res_statEB=TLegend(0.6,0.6,0.89,0.89)
+#  #res_statEB.SetFillColor(0)
+#  #res_statEB.SetBorderSize(0)
+#  #res_statEB.AddEntry(res_preEB,"Mean: %0.2f  RMS: %0.2f"%(res_EBmean,res_EBrms))
+#  #res_statEB.AddEntry(res_recoEB,"Mean: %0.2f  RMS: %0.2f"%(res_recoEBmean,res_recoEBrms))
+#  #res_statEB.AddEntry(res_hltEB,"Mean: %0.2f  RMS: %0.2f"%(res_hltEBmean,res_hltEBrms))
+#  
+#  EBMax = 400
+#  #EBMax = 1350
+#  #EBMax = max(res_EBmax,res_recoEBmax,res_hltEBmax)
+# 
+#  res_lineEB0 = TLine(0.,0.,0.,1.05*EBMax)
+#  res_lineEB0.SetLineWidth(1)
+#  res_lineEB0.SetLineStyle(2)
+# 
+#  res_preEB.SetMaximum(1.1*EBMax)
+#  res_preEB.SetTitle("Barrel")
+#  res_preEB.Draw("hist")
+#  res_recoEB.Draw("hist,sames")
+#  res_hltEB.Draw("hist,sames")
+#  #res_legEB.Draw("sames")
+#  #res_statEB.Draw("sames")
+#
+#  tex.SetTextSize(big)
+#  tex.DrawLatex(xpos,ypos+0.25,"#color[%s]{Unscaled}"%(c_pre))
+#  tex.DrawLatex(xpos,ypos+0.15,"#color[%s]{HLT Trained}"%(c_hlt))
+#  tex.DrawLatex(xpos,ypos+0.05,"#color[%s]{RECO Trained}"%(c_rec))
+#  tex.SetTextSize(sml)
+#  tex.DrawLatex(xpos,ypos+0.2,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_pre,res_EBmean,res_EBrms))
+#  tex.DrawLatex(xpos,ypos+0.1,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_hlt,res_recoEBmean,res_recoEBrms))
+#  tex.DrawLatex(xpos,ypos,"#color[%s]{Mean: %0.2f RMS: %0.3f}"%(c_rec,res_hltEBmean,res_hltEBrms))
+#  cmsPrelim.prelim_noLumi()
+#  if res_line0: res_lineEB0.Draw()
+#  
+#  c1.Print("/afs/hep.wisc.edu/home/tperry/www/HLT/on_off_comp/7_1_2/BDT/%s_res_EB%s.png"%(varname,extraName))
   
   res_preEE = theFile.Get("res_preEE")
   res_preEE.SetName("res_preEE")
@@ -171,7 +168,8 @@ for varname in varnames:
   #res_statEE.AddEntry(res_recoEE,"Mean: %0.2f  RMS: %0.3f"%(res_recoEEmean,res_recoEErms))
   #res_statEE.AddEntry(res_hltEE,"Mean: %0.2f  RMS: %0.3f"%(res_hltEEmean,res_hltEErms))
   
-  EEMax = 750
+  EEMax = 170
+  #EEMax = 750
   #EEMax = max(res_EEmax,res_recoEEmax,res_hltEEmax)
  
   res_lineEE0 = TLine(0.,0.,0.,1.05*EEMax)
@@ -180,6 +178,9 @@ for varname in varnames:
  
   res_preEE.SetMaximum(1.1*EEMax)
   res_preEE.SetTitle("Endcap")
+  res_preEE.Rebin(rebin_EE)
+  res_recoEE.Rebin(rebin_EE)
+  res_hltEE.Rebin(rebin_EE)
   res_preEE.Draw("hist")
   res_recoEE.Draw("hist,sames")
   res_hltEE.Draw("hist,sames")
